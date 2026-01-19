@@ -1105,19 +1105,23 @@ neo_f0 F0(
 	.SYSTEM_TYPE(SYSTEM_MVS)
 );
 
+// --- CORRECTED RTC INSTANTIATION ---
 uPD4990 RTC(
-	.clk_74a(clk_74a),
-	.rtc(rtc),
-	.rtc_valid(rtc_valid),
-	.nRESET(nRESET),
-	.CLK(CLK_12M),
-	.DATA_CLK(RTC_CLK), 
-	.STROBE(RTC_STROBE),
-	.DATA_IN(RTC_DIN), 
-	.DATA_OUT(RTC_DOUT),
-	.CS(1'b1), 
-	.OE(1'b1),
-	.TP(RTC_TP)
+    .clk_74a    (clk_74a),
+    .nRESET     (nRESET),
+    .CLK        (CLK_12M),
+    
+    // Pass the raw RTC bus (padded to 65 bits to match original spec)
+    .rtc        ({1'b0, rtc}), 
+    .rtc_valid  (rtc_valid),
+
+    .DATA_CLK   (RTC_CLK),
+    .DATA_IN    (RTC_DIN),
+    .STROBE     (RTC_STROBE),
+    .TP         (RTC_TP),
+    .DATA_OUT   (RTC_DOUT),
+    .CS         (1'b1),
+    .OE         (1'b1)
 );
 
 neo_g0 G0(
